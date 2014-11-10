@@ -171,7 +171,15 @@ public abstract class AbstractLauncher extends Configured {
 
 
     DataOutputBuffer dob = new DataOutputBuffer();
-    credentials.writeTokenStorageToStream(dob);
+    if (this.getConf().get("mapreduce.job.credentials.binary") != null) {
+      // use delegation tokens, i.e. from Oozie
+      Credentials creds = UserGroupInformation.getLoginUser().getCredentials();
+      creds.writeTokenStorageToStream(dob);
+    } else {
+      // normal auth
+      credentials.writeTokenStorageToStream(dob);
+    }
+
     ByteBuffer tokenBuffer = ByteBuffer.wrap(dob.getData(), 0, dob.getLength());
     containerLaunchContext.setTokens(tokenBuffer);
 

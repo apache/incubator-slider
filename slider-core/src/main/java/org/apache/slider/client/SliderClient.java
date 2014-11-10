@@ -584,6 +584,11 @@ public class SliderClient extends AbstractSliderLaunchedService implements RunSe
     
     AggregateConf instanceDefinition = new AggregateConf();
     ConfTreeOperations appConf = instanceDefinition.getAppConfOperations();
+
+    String tokenCredentials = conf.get("mapreduce.job.credentials.binary");
+    if (tokenCredentials != null)
+      appConf.set("mapreduce.job.credentials.binary", tokenCredentials);
+
     ConfTreeOperations resources = instanceDefinition.getResourceOperations();
     ConfTreeOperations internal = instanceDefinition.getInternalOperations();
     //initial definition is set by the providers 

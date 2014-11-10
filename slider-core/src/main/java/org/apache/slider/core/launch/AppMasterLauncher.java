@@ -204,9 +204,11 @@ public class AppMasterLauncher extends AbstractLauncher {
       );
     }
 
-    // For now, only getting tokens for the default file-system.
-    FileSystem fs = coreFileSystem.getFileSystem();
-    fs.addDelegationTokens(tokenRenewer, credentials);
+    if (this.getConf().get("mapreduce.job.credentials.binary") == null) {
+      // For now, only getting tokens for the default file-system.
+      FileSystem fs = coreFileSystem.getFileSystem();
+      fs.addDelegationTokens(tokenRenewer, credentials);
+    }
   }
 
  
