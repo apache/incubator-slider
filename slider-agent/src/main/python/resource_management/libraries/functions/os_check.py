@@ -33,7 +33,7 @@ def linux_distribution():
   if PYTHON_VER < 26:
     (distname, version, id)  = platform.dist()
   else:
-    (distname, version, id) = platform.linux_distribution()
+    (distname, version, id) = platform.linux_distribution(supported_dists=['system'])
 
   return (platform.system(), os.name, distname, version, id)
 
