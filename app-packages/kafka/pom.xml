@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor license agreements. See the NOTICE file distributed with this work for additional information regarding copyright ownership. The ASF licenses this file to You under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License. -->
+
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.datatorrent</groupId>
+  <version>0.1</version>
+  <artifactId>koya-slider-package</artifactId>
+  <packaging>jar</packaging>
+  <name>koya-slider-package</name>
+  <description>A package of koya on slider</description>
+
+  <properties>
+    <slider.version>0.90.0-incubating-SNAPSHOT</slider.version>
+    <kafka.src>${user.home}/kafka_2.10-0.8.2.1.tgz</kafka.src>
+    <kafka.version>kafka_2.10-0.8.2.1</kafka.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.5.4</version>
+        <executions>
+          <execution>
+            <id>app-package</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptor>src/assembly/koya-app-package.xml</descriptor>
+              <appendAssemblyId>false</appendAssemblyId>
+              <finalName>${app.package.name}</finalName>
+            </configuration>
+          </execution> 
+          <execution>
+           <id>package-with-slider</id>
+           <phase>package</phase> 
+           <goals>
+             <goal>single</goal> 
+           </goals>
+           <configuration>
+             <descriptor>src/assembly/koya-with-slider.xml</descriptor>
+             <appendAssemblyId>false</appendAssemblyId>
+             <finalName>koya-with-slider</finalName>
+             <attach>false</attach>
+           </configuration>
+         </execution>
+
+        </executions>
+      </plugin>
+    </plugins>
+
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.slider</groupId>
+      <artifactId>slider-core</artifactId>
+      <version>${slider.version}</version>
+    </dependency>
+  </dependencies>
+
+
+</project>
+

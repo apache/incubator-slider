@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>zookeeper.connect</name>
+    <value>${@//site/broker/zookeeper}/kafka/${@//site/broker/instance.name}</value>
+  </property>
+  <property>
+    <name>broker.id</name>
+    <value>${@//site/global/app_container_tag}</value>
+  </property>
+  <property>
+    <name>log.dirs</name>
+    <value>${@//site/global/app_pid_dir}</value>
+  </property>
+</configuration>

@@ -1,0 +1,56 @@
+<metainfo>
+  <schemaVersion>2.0</schemaVersion>
+  <application>
+    <name>KAFKA</name>
+    <comment>Scalable High-thoughput Distributed Message Queue</comment>
+    <version>${kafka.version}</version>
+    <exportedConfigs>None</exportedConfigs>
+
+    <exportGroups>
+      <exportGroup>
+        <name>servers</name>
+        <exports>
+          <export>
+            <name>org.apache.kafka.broker</name>
+            <value>${KAFKA_BROKER_HOST}:${site.server.port}</value>
+          </export>
+        </exports>
+      </exportGroup>
+    </exportGroups>
+
+    <components>
+      <component>
+        <name>KAFKA_BROKER</name>
+        <category>SLAVE</category>
+        <minInstanceCount>1</minInstanceCount>
+        <compExports>servers-org.apache.kafka.broker</compExports>
+        <exportedConfigs>broker</exportedConfigs>
+        <commandScript>
+          <script>scripts/kafka.py</script>
+          <scriptType>PYTHON</scriptType>
+        </commandScript>
+      </component>
+    </components>
+
+    <configFiles>
+      <configFile>
+        <type>xml</type>
+        <fileName>server.xml</fileName>
+        <dictionaryName>server</dictionaryName>
+      </configFile>
+    </configFiles>
+
+    <osSpecifics>
+      <osSpecific>
+        <osType>any</osType>
+        <packages>
+          <package>
+            <type>tarball</type>
+            <name>files/${kafka.version}.tgz</name>
+          </package>
+        </packages>
+      </osSpecific>
+    </osSpecifics>
+
+  </application>
+</metainfo>

@@ -1,0 +1,30 @@
+{
+  "schema": "http://example.org/specification/v2.0.0",
+  "metadata": {
+  },
+  "global": {
+    "application.def": ".slider/package/KOYA/koya-slider-package-${project.version}.zip",
+    "java_home": "${JAVA_HOME}",
+    "system_configs": "broker",
+
+    "site.global.app_user": "${USER_NAME}",
+    "site.global.app_root": "${AGENT_WORK_ROOT}/app/install/${kafka.version}",
+    "site.global.app_install_dir": "${AGENT_WORK_ROOT}/app/install",
+    "site.global.pid_file": "${AGENT_WORK_ROOT}/app/run/koya.pid",
+
+    "site.global.kafka_version": "${kafka.version}",
+    "site.broker.xmx_val": "512m",
+    "site.broker.xms_val": "128m",
+    "site.broker.instance.name": "${USER}/${CLUSTER_NAME}",
+    "site.broker.zookeeper": "${ZK_HOST}",
+
+    "site.server.port": "${KAFKA_BROKER.ALLOCATED_PORT}{PER_CONTAINER}"
+  },
+  "components": {
+    "broker": {
+    },
+    "slider-appmaster": {
+      "jvm.heapsize": "256M"
+    }
+  }
+}
