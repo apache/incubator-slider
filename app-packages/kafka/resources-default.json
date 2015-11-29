@@ -1,0 +1,20 @@
+{
+  "schema" : "http://example.org/specification/v2.0.0",
+  "metadata" : {
+  },
+  "global" : {
+    "yarn.container.failure.threshold":"10",
+    "yarn.container.failure.window.hours":"1"
+  },
+  "components" : {
+    "KAFKA_BROKER" : {
+      "yarn.role.priority" : "1",
+      "yarn.component.instances" : "5",
+      "yarn.memory" : "768",
+      "yarn.vcores" : "1",
+      "yarn.component.placement.policy":"1"
+    },
+    "slider-appmaster" : {
+    }
+  }
+}
