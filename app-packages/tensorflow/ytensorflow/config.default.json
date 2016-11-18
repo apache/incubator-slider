@@ -1,0 +1,26 @@
+{
+  "schema" : "http://example.org/specification/v2.0.0",
+  "commandConfig": {
+    "app.name": "tfdocker1"
+  },
+  "appConfig" : {
+    "global": {
+      "user.scripts.entry": "mnist.py --batch_size=100 --learning_rate=0.01",
+      "user.data.dir": "hdfs://default/user/danrtsey.wy/mnist-data"
+    }
+  },
+  "resources": {
+    "components": {
+      "ps": {
+        "yarn.component.instances": "2",
+        "yarn.memory": "2048",
+        "yarn.vcores": "1"
+      },
+      "worker": {
+        "yarn.component.instances": "4",
+        "yarn.memory": "2048",
+        "yarn.vcores": "1"
+      }
+    }
+  }
+}

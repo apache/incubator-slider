@@ -1,0 +1,17 @@
+{
+  "schema": "http://example.org/specification/v2.0.0",
+  "metadata": {
+  },
+  "global": {
+    "site.global.hadoop.conf": "/etc/hadoop/conf",
+    "site.global.user.scripts.entry": "mnist.py",
+    "site.global.user.data.dir": "hdfs://default/user/${USER_NAME}/mnist-data",
+    "site.global.user.checkpoint.prefix": "hdfs://default/user/${USER_NAME}/.slider/checkpoints",
+    "site.global.user.name": "${USER_NAME}",
+    "site.global.zookeeper.quorum": "${ZK_HOST}",
+    "site.global.docker.image": "tensorflow/tensorflow:hdfs",
+    "site.global.ps.port": "${ps.ALLOCATED_PORT}{PER_CONTAINER}",
+    "site.global.worker.port": "${worker.ALLOCATED_PORT}{PER_CONTAINER}",
+    "site.global.tensor.board.port": "${tensorboard.ALLOCATED_PORT}{PER_CONTAINER}"
+  }
+}
