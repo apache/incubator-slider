@@ -33,9 +33,11 @@ def tensorflow_service(action='start'):  # 'start' or 'stop' or 'status'
 
   if action == 'start':
     checkpoint_dir = format("{user_checkpoint_prefix}/{service_name}.{application_id}")
+    # Get allocated resources
+    mem_ps,vcore_ps,mem_worker,vcore_worker,mem_tb,vcore_tb = functions.get_allocated_resources_num()
     # Always launch role tensorboard
     if componentName == "tensorboard":
-      daemon_cmd = format("/usr/bin/docker run -u yarn -d " \
+      daemon_cmd = format("/usr/bin/docker run -d -u $(id -u yarn) --cgroup-parent={yarn_cg_root}/{container_id} -m {mem_tb}m " \
                    "-v {hadoop_conf}:/usr/local/hadoop/etc/hadoop " \
                    "-v /etc/passwd:/etc/passwd -v /etc/group:/etc/group " \
                    "-p {tensorboard_port}:{tensorboard_port} --name={container_id} {docker_image} " \
@@ -58,8 +60,9 @@ def tensorflow_service(action='start'):  # 'start' or 'stop' or 'status'
       allocated_port = format("{ps_port}") if (componentName == 'ps') else format("{worker_port}")
       task_index = (ps_list.index(format("{hostname}:{ps_port}"))) if (componentName == 'ps') else (
         worker_list.index(format("{hostname}:{worker_port}")))
+      mem = mem_ps if (componentName == 'ps') else mem_worker
       # Build clusterSpec and command
-      daemon_cmd = format("/usr/bin/docker run -u yarn -d " \
+      daemon_cmd = format("/usr/bin/docker run -d -u $(id -u yarn) --cgroup-parent={yarn_cg_root}/{container_id} -m {mem}m " \
                    "-v {hadoop_conf}:/usr/local/hadoop/etc/hadoop " \
                    "-v /etc/passwd:/etc/passwd -v /etc/group:/etc/group " \
                    "-v {app_root}:{app_root} -v {app_log_dir}:{app_log_dir} " \

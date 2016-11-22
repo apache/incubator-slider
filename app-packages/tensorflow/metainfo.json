@@ -2,7 +2,7 @@
   "schemaVersion": "2.1",
   "application": {
     "name": "tensorflow",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "exportGroups": [
       {
         "name": "ps",

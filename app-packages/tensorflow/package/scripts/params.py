@@ -24,6 +24,7 @@ from resource_management import *
 config = Script.get_config()
 
 hadoop_conf = config['configurations']['global']['hadoop.conf']
+yarn_cg_root = config['configurations']['global']['yarn.cgroup.root']
 
 user_name = config['configurations']['global']['user.name']
 registry_zk = config['configurations']['global']['zookeeper.quorum']

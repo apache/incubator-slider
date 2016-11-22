@@ -1,14 +1,21 @@
+# Environments
+* Redhat 7
+* Linux Kernel 3.10.0
+* Docker 1.12.3
+* Hadoop 2.6.5
+* Docker image tensorflow/tensorflow:hdfs, [Dockerfile](https://github.com/tensorflow/ecosystem/blob/master/docker/Dockerfile.hdfs)
+
 # Use slider to run a tensorflow cluster
 1. Make sure slider could work well, see the [Slider Start](https://slider.incubator.apache.org/docs/getting_started.html)
-2. Use [Dockerfile](https://github.com/tensorflow/ecosystem/blob/master/docker/Dockerfile.hdfs) to build a image, and set "site.global.docker.image" in "appConfig.default.json"
-3. Download app-packages/tensorflow to $SLIDER_HOME/app-packages/tensorflow
-4. Put your tensorflow scripts under app-packages/tensorflow/package/files
-5. Set "site.global.hadoop.conf", "site.global.user.scripts.entry", "site.global.user.data.dir", "site.global.user.checkpoint.dir" according to your situation in "appConfig.default.json"
-6. Set resource in resources.default.json if you need
-7. As is often the case, there is no need to update metainfo.json
-8. Start your tensorflow cluster
+2. Download app-packages/tensorflow to $SLIDER_HOME/app-packages/tensorflow
+3. Put your tensorflow scripts under app-packages/tensorflow/package/files
+4. Set "site.global.hadoop.conf", "site.global.user.scripts.entry", "site.global.user.data.dir", "site.global.user.checkpoint.dir" according to your situation in "appConfig.default.json"
+5. Set resource in resources.default.json if you need
+6. As is often the case, there is no need to update metainfo.json
+7. Start your tensorflow cluster
 ```
-cd $SLIDER_HOME/app-packages/tensorflow && slider create [app-name] --appdef . --template appConfig-default.json --resources resources.default.json
+cd $SLIDER_HOME/app-packages/tensorflow
+slider create [app-name] --appdef . --template appConfig-default.json --resources resources.default.json
 ```
 
 # Use ytensorflow to run a tensorflow cluster

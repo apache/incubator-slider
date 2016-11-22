@@ -38,13 +38,23 @@ def get_am_rest_base():
   return am_rest_base
 
 
+def get_allocated_resources_num():
+  resources_rest_url = get_am_rest_base() + '/ws/v1/slider/application/live/resources'
+  resources = json.loads(urllib2.urlopen(resources_rest_url).read())
+  mem_ps = int(resources['components']['ps']['yarn.memory'])
+  vcore_ps = int(resources['components']['ps']['yarn.vcores'])
+  mem_worker = int(resources['components']['worker']['yarn.memory'])
+  vcore_worker = int(resources['components']['worker']['yarn.vcores'])
+  mem_tb = int(resources['components']['tensorboard']['yarn.memory'])
+  vcore_tb = int(resources['components']['tensorboard']['yarn.vcores'])
+  return mem_ps,vcore_ps,mem_worker,vcore_worker,mem_tb,vcore_tb
+
 def get_allocated_instances_num():
   resources_rest_url = get_am_rest_base() + '/ws/v1/slider/application/live/resources'
   resources = json.loads(urllib2.urlopen(resources_rest_url).read())
   n = int(resources['components']['ps']['yarn.component.instances'])
   m = int(resources['components']['worker']['yarn.component.instances'])
   return n, m
-
 
 def get_launched_instances():
   try:
