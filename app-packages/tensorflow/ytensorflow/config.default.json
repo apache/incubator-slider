@@ -5,8 +5,7 @@
   },
   "appConfig" : {
     "global": {
-      "user.scripts.entry": "mnist.py --batch_size=100 --learning_rate=0.01",
-      "user.data.dir": "hdfs://default/user/danrtsey.wy/mnist-data"
+      "user.scripts.entry": "ymnist.py"
     }
   },
   "resources": {

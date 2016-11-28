@@ -28,8 +28,8 @@ yarn_cg_root = config['configurations']['global']['yarn.cgroup.root']
 
 user_name = config['configurations']['global']['user.name']
 registry_zk = config['configurations']['global']['zookeeper.quorum']
+
 user_scripts_entry = config['configurations']['global']['user.scripts.entry']
-user_data_dir = config['configurations']['global']['user.data.dir']
 user_checkpoint_prefix = config['configurations']['global']['user.checkpoint.prefix']
 
 docker_image = config['configurations']['global']['docker.image']

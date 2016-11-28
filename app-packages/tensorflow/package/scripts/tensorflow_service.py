@@ -18,11 +18,9 @@ limitations under the License.
 
 """
 
-import sys
 import os
 import time
 from resource_management import *
-
 
 def tensorflow_service(action='start'):  # 'start' or 'stop' or 'status'
   import params
@@ -69,11 +67,11 @@ def tensorflow_service(action='start'):  # 'start' or 'stop' or 'status'
                    "-p {allocated_port}:{allocated_port} --name={container_id} {docker_image} " \
                    "/bin/bash -c 'export HADOOP_USER_NAME={user_name}; /usr/bin/python {app_root}/{user_scripts_entry} " \
                    "--ps_hosts={ps_hosts} --worker_hosts={worker_hosts} --job_name={componentName} --task_index={task_index} " \
-                   "--data_dir={user_data_dir} --ckp_dir={checkpoint_dir} >>{app_log_dir}/tensorflow.out 2>&1'")
+                   "--ckp_dir={checkpoint_dir} --work_dir={app_root} >>{app_log_dir}/tensorflow.out 2>&1'")
       Execute(daemon_cmd)
   elif action == 'stop':
     cmd = format("/usr/bin/docker stop {container_id}")
-    op_test = format("/usr/bin/docker top {container_id} >/dev/null 2>&1")
+    op_test = format("/usr/bin/docker ps | grep {container_id} >/dev/null 2>&1")
     Execute(cmd,
             tries=5,
             try_sleep=10,
