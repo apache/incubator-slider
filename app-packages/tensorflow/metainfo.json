@@ -14,6 +14,15 @@
         ]
       },
       {
+        "name": "chiefworker",
+        "exports": [
+          {
+            "name": "host_port",
+            "value": "${chiefworker_HOST}:${site.global.chiefworker.port}"
+          }
+        ]
+      },
+      {
         "name": "worker",
         "exports": [
           {
@@ -27,7 +36,7 @@
         "exports": [
           {
             "name": "url",
-            "value": "http://${tensorboard_HOST}:${site.global.tensor.board.port}"
+            "value": "http://${tensorboard_HOST}:${site.global.tensorboard.port}"
           }
         ]
       }
@@ -36,6 +45,14 @@
       {
         "name": "ps",
         "compExports": "ps-host_port",
+        "commandScript": {
+          "script": "scripts/tensorflow.py",
+          "scriptType": "PYTHON"
+        }
+      },
+      {
+        "name": "chiefworker",
+        "compExports": "chiefworker-host_port",
         "commandScript": {
           "script": "scripts/tensorflow.py",
           "scriptType": "PYTHON"

@@ -48,6 +48,9 @@ class Ymnist(YarnBootstrap):
           step = training_util.global_step(sess, training_util.get_global_step(sess.graph))
           print("Global step " + str(step))
 
+  def ps_do(self, server, cluster_spec, task_id):
+    print("Starting ps " + str(task_id))
+
   def read_and_decode(self, filename_queue):
     reader = tf.TFRecordReader()
     _, serialized_example = reader.read(filename_queue)
@@ -67,7 +70,7 @@ class Ymnist(YarnBootstrap):
     return image, label
 
   def inputs(self, batch_size):
-    filename = os.path.join("hdfs://default/user/danrtsey.wy/mnist-data", "train.tfrecords")
+    filename = os.path.join("hdfs://hdpdev/user/danrtsey.wy/mnist-data", "train.tfrecords")
     with tf.name_scope('input'):
       filename_queue = tf.train.string_input_producer([filename])
       image, label = self.read_and_decode(filename_queue)

@@ -39,9 +39,15 @@ app_log_dir = config['configurations']['global']['app_log_dir']
 pid_file = config['configurations']['global']['pid_file']
 
 container_id = config['configurations']['global']['app_container_id']
+
 ps_port = config['configurations']['global']['ps.port']
+chiefworker_port = config['configurations']['global']['chiefworker.port']
 worker_port = config['configurations']['global']['worker.port']
-tensorboard_port = config['configurations']['global']['tensor.board.port']
+tensorboard_port = config['configurations']['global']['tensorboard.port']
+ports_dict = {"port.ps": ps_port,
+              "port.chiefworker": chiefworker_port,
+              "port.worker": worker_port,
+              "port.tensorboard": tensorboard_port}
 
 componentName = config['componentName']
 service_name = config['serviceName']

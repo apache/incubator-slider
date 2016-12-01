@@ -38,14 +38,15 @@ def main():
   elif args[0] == 'cluster':
     if args[1] == '-start':
       app_name = parse_conf(args[2])
-      cp_files(args[args.index('-files') + 1])
+      if 4 < len(args):
+        cp_files(args[args.index('-files') + 1])
       cmd = "%s status %s || %s destroy %s --force && %s create %s --appdef %s --resources %s --template %s" \
             %(slider, app_name,
               slider, app_name,
               slider, app_name, sys.argv[-1], sys.argv[-1] + '/resources.json', sys.argv[-1] + '/appConfig.json')
     if args[1] == '-stop':
       app_name = args[2]
-      cmd = slider + " stop " + app_name + " && " + slider + " destroy " + app_name + " --force"
+      cmd = slider + " stop " + app_name
     if args[1] == '-status':
       app_name = args[2]
       cmd = slider + " status " + app_name
@@ -87,6 +88,8 @@ def parse_conf(config_file):
           data_res = json.load(f)
           for kk,vv in data['resources']['components']['ps'].items():
             data_res['components']['ps'][kk] = vv
+          for kk,vv in data['resources']['components']['chiefworker'].items():
+            data_res['components']['chiefworker'][kk] = vv
           for kk,vv in data['resources']['components']['worker'].items():
             data_res['components']['worker'][kk] = vv
         with open(tmp_path + '/resources.json', 'w') as f:

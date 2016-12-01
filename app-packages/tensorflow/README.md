@@ -3,7 +3,7 @@
 * Linux Kernel 3.10.0
 * Docker 1.12.3
 * Hadoop 2.6.5
-* Docker image tensorflow/tensorflow:hdfs, [Dockerfile](https://github.com/tensorflow/ecosystem/blob/master/docker/Dockerfile.hdfs)
+* Docker image ytensorflow:0.2.1, [Dockerfile](https://github.com/tensorflow/ecosystem/blob/master/docker/Dockerfile.hdfs)
 
 # Use slider to run a tensorflow cluster
 1. Make sure slider could work well, see the [Slider Start](https://slider.incubator.apache.org/docs/getting_started.html)

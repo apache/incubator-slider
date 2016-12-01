@@ -38,23 +38,30 @@ def get_am_rest_base():
   return am_rest_base
 
 
-def get_allocated_resources_num():
+def get_allocated_resources():
   resources_rest_url = get_am_rest_base() + '/ws/v1/slider/application/live/resources'
   resources = json.loads(urllib2.urlopen(resources_rest_url).read())
   mem_ps = int(resources['components']['ps']['yarn.memory'])
   vcore_ps = int(resources['components']['ps']['yarn.vcores'])
+  mem_chiefworker = int(resources['components']['chiefworker']['yarn.memory'])
+  vcore_chiefworker = int(resources['components']['chiefworker']['yarn.vcores'])
   mem_worker = int(resources['components']['worker']['yarn.memory'])
   vcore_worker = int(resources['components']['worker']['yarn.vcores'])
   mem_tb = int(resources['components']['tensorboard']['yarn.memory'])
   vcore_tb = int(resources['components']['tensorboard']['yarn.vcores'])
-  return mem_ps,vcore_ps,mem_worker,vcore_worker,mem_tb,vcore_tb
+  dict = {"mem.ps": mem_ps, "vcore.ps": vcore_ps,
+          "mem.chiefworker": mem_chiefworker, "vcore_chiefworker": vcore_chiefworker,
+          "mem.worker": mem_worker, "vcore.worker": vcore_worker,
+          "mem.tensorboard": mem_tb, "vcore.tensorboard": vcore_tb}
+  return dict
 
 def get_allocated_instances_num():
   resources_rest_url = get_am_rest_base() + '/ws/v1/slider/application/live/resources'
   resources = json.loads(urllib2.urlopen(resources_rest_url).read())
   n = int(resources['components']['ps']['yarn.component.instances'])
-  m = int(resources['components']['worker']['yarn.component.instances'])
-  return n, m
+  cw = int(resources['components']['chiefworker']['yarn.component.instances'])
+  w = int(resources['components']['worker']['yarn.component.instances'])
+  return n, cw + w
 
 def get_launched_instances():
   try:
@@ -64,6 +71,11 @@ def get_launched_instances():
     ps_list = []
     for item in exports_ps['entries']['host_port']:
       ps_list.append(item['value'])
+    # get launched chief worker
+    exports_chiefworker = json.loads(urllib2.urlopen(exports_rest_url + '/chiefworker').read())
+    chiefworker_list = []
+    for item in exports_chiefworker['entries']['host_port']:
+      chiefworker_list.append(item['value'])
     # get launched worker list
     exports_worker = json.loads(urllib2.urlopen(exports_rest_url + '/worker').read())
     worker_list = []
@@ -72,7 +84,7 @@ def get_launched_instances():
   except:
     return ([], [])
   else:
-    return (ps_list, worker_list)
+    return (ps_list, chiefworker_list + worker_list)
 
 def get_application_id(container_id):
   ss = container_id.split('_')
@@ -99,11 +111,11 @@ def get_workers():
   for node in comps['nodes']:
     comp_url = comps_url + "/" + node
     comp = json.loads(urllib2.urlopen(comp_url).read())
-    if comp['service']['description'] == 'worker' and comp['service'].has_key('status') \
-        and comp['service']['status'] == 'finished':
-      finished.append(node)
-    elif comp['service']['description'] == 'worker':
-      running.append(node)
+    if 'worker' in comp['service']['description']:
+      if comp['service'].has_key('status') and comp['service']['status'] == 'finished':
+        finished.append(node)
+      else:
+        running.append(node)
   return running, finished
 
 

@@ -34,8 +34,7 @@ flags.DEFINE_string("ps_hosts", "", "Comma-separated list of hostname:port pairs
 flags.DEFINE_string("worker_hosts", "", "Comma-separated list of hostname:port pairs")
 flags.DEFINE_string("ckp_dir", None, "Directory for storing the checkpoints")
 flags.DEFINE_string("work_dir", "/tmp/tf_on_yarn", "Work directory")
-flags.DEFINE_string("data_dir", "tfdata", "Relative directory of data")
-flags.DEFINE_string("train_dir", "train", "Relative directory to store summary and checkpoint on local fs")
+
 FLAGS = flags.FLAGS
 
 class YarnBootstrap(object):
@@ -46,6 +45,10 @@ class YarnBootstrap(object):
 
   @abstractmethod
   def worker_do(self, server, cluster_spec, task_id):
+    pass
+
+  @abstractmethod
+  def ps_do(self, server, cluster_spec, task_id):
     pass
 
   def device_and_server(self):
@@ -72,6 +75,7 @@ class YarnBootstrap(object):
       cluster_spec, job_name=FLAGS.job_name, task_index=FLAGS.task_index)
     time.sleep(60)
     if FLAGS.job_name == "ps":
+      self.ps_do(server, cluster_spec, FLAGS.task_index)
       server.join()
 
     worker_device = "/job:worker/task:{}".format(FLAGS.task_index)

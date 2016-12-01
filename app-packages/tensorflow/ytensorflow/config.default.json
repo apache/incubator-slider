@@ -15,6 +15,10 @@
         "yarn.memory": "2048",
         "yarn.vcores": "1"
       },
+      "chiefworker": {
+        "yarn.memory": "4096",
+        "yarn.vcores": "1"
+      },
       "worker": {
         "yarn.component.instances": "4",
         "yarn.memory": "2048",
