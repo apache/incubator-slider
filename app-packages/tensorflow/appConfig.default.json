@@ -3,6 +3,7 @@
   "metadata": {
   },
   "global": {
+    "site.global.slider.allowed.ports": "25000-30000",
     "site.global.hadoop.conf": "/etc/hadoop/conf",
     "site.global.yarn.cgroup.root": "/hadoop-yarn",
     "site.global.user.scripts.entry": "ymnist.py",

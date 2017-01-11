@@ -38,7 +38,7 @@ def tensorflow_service(action='start'):  # 'start' or 'stop' or 'status'
       daemon_cmd = format("/usr/bin/docker run -d -u $(id -u yarn) --cgroup-parent={yarn_cg_root}/{container_id} -m {mem}m " \
                    "-v {hadoop_conf}:/usr/local/hadoop/etc/hadoop " \
                    "-v /etc/passwd:/etc/passwd -v /etc/group:/etc/group " \
-                   "-p {allocated_port}:{allocated_port} --name={container_id} ytensorflow:0.2.1 " \
+                   "--net=host --name={container_id} {docker_image} " \
                    "/bin/bash -c 'tensorboard --logdir={checkpoint_dir} --port={allocated_port}'")
       Execute(daemon_cmd)
     else:
@@ -63,13 +63,13 @@ def tensorflow_service(action='start'):  # 'start' or 'stop' or 'status'
                    "-v {hadoop_conf}:/usr/local/hadoop/etc/hadoop " \
                    "-v /etc/passwd:/etc/passwd -v /etc/group:/etc/group " \
                    "-v {app_root}:{app_root} -v {app_log_dir}:{app_log_dir} " \
-                   "-p {allocated_port}:{allocated_port} --name={container_id} {docker_image} " \
-                   "/bin/bash -c 'export HADOOP_USER_NAME={user_name}; /usr/bin/python {app_root}/{user_scripts_entry} " \
+                   "--net=host --name={container_id} {docker_image} " \
+                   "/bin/bash -c 'export HADOOP_USER_NAME={user_name}; export PYTHONPATH=$PYTHONPATH:{app_root}; /usr/bin/python {app_root}/{user_scripts_entry} " \
                    "--ps_hosts={ps_hosts} --worker_hosts={worker_hosts} --job_name={job_name} --task_index={task_index} " \
                    "--ckp_dir={checkpoint_dir} --work_dir={app_root} >>{app_log_dir}/tensorflow.out 2>>{app_log_dir}/tensorflow.err'")
       Execute(daemon_cmd)
   elif action == 'stop':
-    cmd = format("/usr/bin/docker stop {container_id}")
+    cmd = format("/usr/bin/docker kill {container_id}")
     op_test = format("/usr/bin/docker ps | grep {container_id} >/dev/null 2>&1")
     Execute(cmd,
             tries=5,
