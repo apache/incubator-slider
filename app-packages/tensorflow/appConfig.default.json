@@ -1,0 +1,19 @@
+{
+  "schema": "http://example.org/specification/v2.0.0",
+  "metadata": {
+  },
+  "global": {
+    "site.global.slider.allowed.ports": "25000-30000",
+    "site.global.hadoop.conf": "/etc/hadoop/conf",
+    "site.global.yarn.cgroup.root": "/hadoop-yarn",
+    "site.global.user.scripts.entry": "ymnist.py",
+    "site.global.user.checkpoint.prefix": "hdfs://hdpdev/user/${USER_NAME}/.slider/cluster",
+    "site.global.user.name": "${USER_NAME}",
+    "site.global.zookeeper.quorum": "${ZK_HOST}",
+    "site.global.docker.image": "ytensorflow:0.2.1",
+    "site.global.ps.port": "${ps.ALLOCATED_PORT}{PER_CONTAINER}",
+    "site.global.chiefworker.port": "${chiefworker.ALLOCATED_PORT}{PER_CONTAINER}",
+    "site.global.worker.port": "${worker.ALLOCATED_PORT}{PER_CONTAINER}",
+    "site.global.tensorboard.port": "${tensorboard.ALLOCATED_PORT}{PER_CONTAINER}"
+  }
+}

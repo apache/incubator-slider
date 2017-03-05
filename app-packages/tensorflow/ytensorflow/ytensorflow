@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# this is the wrapper shell script to invoke the ytensorflow.py script in the same folder
+
+bin=`S=\`readlink "$0"\`; [ -z "$S" ] && S=$0; dirname $S`
+bin=`cd "$bin"; pwd`
+
+function print_usage(){
+  echo "Usage: ytensorflow COMMAND"
+  echo "       where COMMAND is one of:"
+  echo "  cluster              cluster management"
+  echo "  version              print the version"
+  echo ""
+  echo "Most commands print help when invoked w/o parameters."
+}
+
+if [ $# = 0 ]; then
+  print_usage
+  exit
+fi
+
+COMMAND=$1
+case $COMMAND in
+  # usage flags
+  --help|-help|-h)
+    print_usage
+    exit
+    ;;
+
+  # tensorflow cluster management
+  cluster)
+    [ ! -d "$HOME/.slider" ] && { mkdir "$HOME/.slider"; }
+    path_tmp="$HOME/.slider/tensorflow.$(date +'%s')"
+    cp -r "$bin/.." $path_tmp
+    /usr/bin/python $bin/ytensorflow.py $@ $path_tmp
+    [ $? -eq 0 ] && rm -rf $path_tmp
+    exit
+    ;;
+
+  version)
+    /usr/bin/python $bin/ytensorflow.py $@
+    exit
+    ;;
+
+  *)
+    echo "Error: No command named $COMMAND was found."
+    exit
+    ;;
+esac

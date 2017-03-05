@@ -1,0 +1,38 @@
+{
+ "schema" : "http://example.org/specification/v2.0.0",
+ "metadata" : {
+ },
+ "global" : {
+ },
+ "components": {
+  "slider-appmaster": {
+  },
+  "ps": {
+    "yarn.role.priority": "1",
+    "yarn.component.instances": "2",
+    "yarn.memory": "2048",
+    "yarn.vcores": "1",
+    "yarn.container.failure.threshold": "0"
+  },
+  "chiefworker": {
+    "yarn.role.priority": "2",
+    "yarn.component.instances": "1",
+    "yarn.memory": "4096",
+    "yarn.vcores": "1",
+    "yarn.container.failure.threshold": "0"
+  },
+  "worker": {
+    "yarn.role.priority": "3",
+    "yarn.component.instances": "5",
+    "yarn.memory": "2048",
+    "yarn.vcores": "1",
+    "yarn.container.failure.threshold": "0"
+  },
+  "tensorboard": {
+    "yarn.role.priority": "4",
+    "yarn.component.instances": "1",
+    "yarn.memory": "4096",
+    "yarn.vcores": "1"
+  }
+ }
+}

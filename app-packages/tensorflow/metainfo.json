@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "2.1",
+  "application": {
+    "name": "tensorflow",
+    "version": "0.1.1",
+    "exportGroups": [
+      {
+        "name": "ps",
+        "exports": [
+          {
+            "name": "host_port",
+            "value": "${ps_HOST}:${site.global.ps.port}"
+          }
+        ]
+      },
+      {
+        "name": "chiefworker",
+        "exports": [
+          {
+            "name": "host_port",
+            "value": "${chiefworker_HOST}:${site.global.chiefworker.port}"
+          }
+        ]
+      },
+      {
+        "name": "worker",
+        "exports": [
+          {
+            "name": "host_port",
+            "value": "${worker_HOST}:${site.global.worker.port}"
+          }
+        ]
+      },
+      {
+        "name": "tensorboard",
+        "exports": [
+          {
+            "name": "url",
+            "value": "http://${tensorboard_HOST}:${site.global.tensorboard.port}"
+          }
+        ]
+      }
+    ],
+    "components": [
+      {
+        "name": "ps",
+        "compExports": "ps-host_port",
+        "commandScript": {
+          "script": "scripts/tensorflow.py",
+          "scriptType": "PYTHON"
+        }
+      },
+      {
+        "name": "chiefworker",
+        "compExports": "chiefworker-host_port",
+        "commandScript": {
+          "script": "scripts/tensorflow.py",
+          "scriptType": "PYTHON"
+        }
+      },
+      {
+        "name": "worker",
+        "compExports": "worker-host_port",
+        "commandScript": {
+          "script": "scripts/tensorflow.py",
+          "scriptType": "PYTHON"
+        }
+      },
+      {
+        "name": "tensorboard",
+        "compExports": "tensorboard-url",
+        "commandScript": {
+          "script": "scripts/tensorflow.py",
+          "scriptType": "PYTHON"
+        }
+      }
+    ],
+    "packages": [
+      {
+        "type": "folder",
+        "name": "files"
+      }
+    ]
+  }
+}

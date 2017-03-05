@@ -1,0 +1,29 @@
+{
+  "schema" : "http://example.org/specification/v2.0.0",
+  "commandConfig": {
+    "app.name": "tfdocker1"
+  },
+  "appConfig" : {
+    "global": {
+      "user.scripts.entry": "ymnist.py"
+    }
+  },
+  "resources": {
+    "components": {
+      "ps": {
+        "yarn.component.instances": "2",
+        "yarn.memory": "2048",
+        "yarn.vcores": "1"
+      },
+      "chiefworker": {
+        "yarn.memory": "4096",
+        "yarn.vcores": "1"
+      },
+      "worker": {
+        "yarn.component.instances": "4",
+        "yarn.memory": "2048",
+        "yarn.vcores": "1"
+      }
+    }
+  }
+}
