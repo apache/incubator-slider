@@ -3047,14 +3047,65 @@ public class AgentProviderService extends AbstractProviderService implements
     cmd.setConfigurations(configurations);
     response.addExecutionCommand(cmd);
   }
+
+  protected void addStopDockerCommand(String roleName, String roleGroup, String containerId,
+	      HeartBeatResponse response, String scriptPath, long timeout,
+	      boolean isInUpgradeMode) throws SliderException {
+    assert getAmState().isApplicationLive();
+    ConfTreeOperations appConf = getAmState().getAppConfSnapshot();
+    ConfTreeOperations internalsConf = getAmState().getInternalsSnapshot();
+
+    ExecutionCommand cmdStop = new ExecutionCommand(
+        AgentCommandType.EXECUTION_COMMAND);
+    cmdStop.setTaskId(taskId.get());
+    cmdStop.setCommandId(cmdStop.getTaskId() + "-1");
+    String clusterName = internalsConf.get(OptionKeys.APPLICATION_NAME);
+    String hostName = getClusterInfoPropertyValue(StatusKeys.INFO_AM_HOSTNAME);
+    cmdStop.setHostname(hostName);
+    cmdStop.setClusterName(clusterName);
+    // Upgrade stop is differentiated by passing a transformed role command -
+    // UPGRADE_STOP
+    cmdStop.setRoleCommand(Command.transform(Command.STOP, isInUpgradeMode));
+    cmdStop.setServiceName(clusterName);
+    cmdStop.setComponentName(roleName);
+    cmdStop.setRole(roleName);
+    Map<String, String> hostLevelParamsStop = new TreeMap<String, String>();
+    hostLevelParamsStop.put(JAVA_HOME, appConf.getGlobalOptions()
+        .getMandatoryOption(JAVA_HOME));
+    hostLevelParamsStop.put(CONTAINER_ID, containerId);
+    cmdStop.setHostLevelParams(hostLevelParamsStop);
+    cmdStop.setCommandParams(commandParametersSet(scriptPath, timeout, true));
+
+    Map<String, Map<String, String>> configurationsStop = buildCommandConfigurations(
+        appConf, containerId, roleName, roleGroup);
     
+    Map<String, String> dockerConfig = new HashMap<String, String>();
+    if(isYarnDockerContainer(roleGroup)){
+    //put nothing
+	  cmdStop.setYarnDockerMode(true);
+    } else {
+    	// actually, current implementation of DockerManager.py needs nothing from slider-provider side
+    	// we tell slider-agent this is docker stop command, which is enough
+    	dockerConfig.put("docker.command_path",getConfigFromMetaInfoWithAppConfigOverriding(roleGroup,"commandPath"));
+    }
+    configurationsStop.put("docker", dockerConfig);
+
+    cmdStop.setConfigurations(configurationsStop);
+    response.addExecutionCommand(cmdStop);
+  }
+   
+ 
   protected void addStopCommand(String roleName, String roleGroup, String containerId,
       HeartBeatResponse response, String scriptPath, long timeout,
       boolean isInUpgradeMode) throws SliderException {
     assert getAmState().isApplicationLive();
     ConfTreeOperations appConf = getAmState().getAppConfSnapshot();
     ConfTreeOperations internalsConf = getAmState().getInternalsSnapshot();
-
+    if (isDockerContainer(roleGroup) || isYarnDockerContainer(roleGroup)) {
+        addStopDockerCommand(roleName, roleGroup, containerId, response,
+            scriptPath, timeout, isInUpgradeMode);
+        return;
+    }
     ExecutionCommand cmdStop = new ExecutionCommand(
         AgentCommandType.EXECUTION_COMMAND);
     cmdStop.setTaskId(taskId.get());
