@@ -57,7 +57,7 @@ def linux_distribution():
   elif _is_redhat_linux():
     (distname, version, id) = platform.dist()
   else:
-    (distname, version, id) = platform.linux_distribution()
+    (distname, version, id) = platform.linux_distribution(supported_dists=['system'])
 
   if distname == '':
     (distname, version) = advanced_check((distname, version))
